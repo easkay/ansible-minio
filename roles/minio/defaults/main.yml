@@ -1,0 +1,7 @@
+---
+minio_user: minio
+minio_download_url: https://dl.minio.io/server/minio/release/linux-amd64/minio
+minio_download_dir: /tmp
+minio_binary_dir: /usr/local/bin
+minio_always_update_binary: false
+...

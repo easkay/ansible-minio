@@ -1,0 +1,15 @@
+---
+- name: Create private group for minio user
+  group:
+    name: "{{ minio_user }}"
+    system: yes
+    state: present
+- name: Create minio user
+  user:
+    name: "{{ minio_user }}"
+    group: "{{ minio_user }}"
+    shell: "/bin/bash"
+    system: yes
+    comment: "Minio application user"
+    state: present
+...

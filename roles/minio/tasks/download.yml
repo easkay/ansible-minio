@@ -1,0 +1,16 @@
+---
+- name: Download minio server
+  get_url:
+    url: "{{ minio_download_url }}"
+    dest: "{{ minio_download_dir }}"
+    mode: 0755
+- name: Install minio binary
+  copy:
+    src: "{{ minio_download_dir }}/minio"
+    dest: "{{ minio_binary_dir }}/minio"
+    owner: "{{ minio_user }}"
+    group: "{{ minio_user }}"
+    mode: 0755
+    remote_src: true
+    force: "{{ minio_always_update_binary }}"
+...

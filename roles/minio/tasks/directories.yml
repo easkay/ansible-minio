@@ -1,0 +1,6 @@
+---
+- name: Create minio binary dir if necesary
+  file:
+    path: "{{ minio_binary_dir }}"
+    state: directory
+...
