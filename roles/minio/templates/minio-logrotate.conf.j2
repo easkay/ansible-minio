@@ -1,0 +1,37 @@
+{{ minio_log_dir }}/{{ minio_stdout_log_name }} {
+  daily
+  missingok
+  rotate 7
+  compress
+  delaycompress
+  notifempty
+{# Use copytruncate if not using syslog as minio doesn't support log reloading #}
+{% if minio_use_syslog is defined and minio_use_syslog %}
+  sharedscripts
+  postrotate
+    /usr/bin/killall -HUP rsyslogd
+  endscript
+{% else %}
+  copytruncate
+{% endif %}
+}
+{# Allow for customisable, separate configs for stdout and stderr #}
+{% if not minio_stdout_log_name == minio_stderr_log_name %}
+{{ minio_log_dir }}/{{ minio_stdout_log_name }} {
+  daily
+  missingok
+  rotate 7
+  compress
+  delaycompress
+  notifempty
+{# Use copytruncate if not using syslog as minio doesn't support log reloading #}
+{% if minio_use_syslog is defined and minio_use_syslog %}
+  sharedscripts
+  postrotate
+    /usr/bin/killall -HUP rsyslogd
+  endscript
+{% else %}
+  copytruncate
+{% endif %}
+}
+{% endif %}

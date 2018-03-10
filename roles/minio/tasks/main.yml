@@ -2,4 +2,9 @@
 - include_tasks: "user.yml"
 - include_tasks: "directories.yml"
 - include_tasks: "download.yml"
+- include_tasks: "syslog.yml"
+  when: minio_use_syslog
+- include_tasks: "logrotate.yml"
+  when: minio_setup_logrotate
+- include_tasks: service.yml
 ...

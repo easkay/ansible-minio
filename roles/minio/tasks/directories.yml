@@ -3,4 +3,11 @@
   file:
     path: "{{ minio_binary_dir }}"
     state: directory
+- name: Create minio log dir if necessary
+  file:
+    path: "{{ minio_log_dir }}"
+    state: directory
+    owner: "{{ minio_user }}"
+    group: "{{ minio_user }}"
+  when: minio_setup_logging
 ...

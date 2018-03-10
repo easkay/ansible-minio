@@ -8,7 +8,7 @@
   user:
     name: "{{ minio_user }}"
     group: "{{ minio_user }}"
-    shell: "/bin/bash"
+    shell: "/bin/nologin"
     system: yes
     comment: "Minio application user"
     state: present

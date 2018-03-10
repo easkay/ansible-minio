@@ -1,0 +1,10 @@
+---
+- name: Copy minio syslog config if necessary
+  template:
+    src: minio-syslog.conf.j2
+    dest: /etc/rsyslog.d/minio.conf
+    owner: root
+    group: root
+  when: minio_use_syslog
+  notify: restart_rsyslog
+...

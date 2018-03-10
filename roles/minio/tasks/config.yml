@@ -1,0 +1,9 @@
+---
+- name: Copy minio env config
+  template:
+    src: minio-defaults.j2
+    dest: /etc/default/minio
+    owner: root
+    group: root
+  notify: restart_minio
+...

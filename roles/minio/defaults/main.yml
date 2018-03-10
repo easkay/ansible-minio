@@ -2,6 +2,22 @@
 minio_user: minio
 minio_download_url: https://dl.minio.io/server/minio/release/linux-amd64/minio
 minio_download_dir: /tmp
+minio_working_dir: /usr/local
 minio_binary_dir: /usr/local/bin
+minio_log_dir: /var/log/minio
 minio_always_update_binary: false
+minio_setup_logging: true
+minio_setup_logrotate: true
+minio_use_syslog: true
+minio_stdout_log_name: minio.stdout.log
+minio_stderr_log_name: minio.stderr.log
+
+minio_multitenanting: false
+
+# minio_multitenanting: true
+# minio_instances:
+#   - name: ""
+#     port: 9000
+#     data_directories:
+#       - /mnt/foo
 ...
