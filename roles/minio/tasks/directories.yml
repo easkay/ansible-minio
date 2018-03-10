@@ -7,7 +7,7 @@
   file:
     path: "{{ minio_log_dir }}"
     state: directory
-    owner: "{{ minio_user }}"
-    group: "{{ minio_user }}"
+    owner: "{{ minio_use_syslog|ternary('root', minio_user) }}"
+    group: "{{ minio_user|ternary('root', minio_user) }}"
   when: minio_setup_logging
 ...

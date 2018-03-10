@@ -1,0 +1,15 @@
+{% if minio_access_key is defined %}
+MINIO_ACCESS_KEY={{ minio_access_key }}
+{% endif %}
+{% if minio_secret_key is defined %}
+MINIO_SECRET_KEY={{ minio_secret_key }}
+{% endif %}
+{% if minio_region is defined %}
+MINIO_REGION={{ minio_region }}
+{% endif %}
+{% if minio_browser is defined %}
+MINIO_BROWSER={{ minio_browser }}
+{% endif %}
+{% if minio_domain is defined %}
+MINIO_DOMAIN={{ minio_domain }}
+{% endif %}

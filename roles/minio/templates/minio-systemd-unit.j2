@@ -1,4 +1,4 @@
-# Taken from https://github.com/minio/minio-service/blob/master/linux-systemd/minio.service
+# Taken from https://github.com/minio/minio-service/blob/master/linux-systemd/minio.service and tweaked
 [Unit]
 Description=Minio
 Documentation=https://docs.minio.io
@@ -15,7 +15,7 @@ Group={{ minio_user }}
 PermissionsStartOnly=true
 
 EnvironmentFile=-/etc/default/minio
-ExecStartPre=/bin/bash -c "[ -n \"${MINIO_VOLUMES}\" ] || echo \"Variable MINIO_VOLUMES not set in /etc/default/minio\""
+ExecStartPre=/bin/bash -c "[ -n \"${MINIO_VOLUMES}\" ] || (echo \"Variable MINIO_VOLUMES not set in /etc/default/minio\" && exit 1)"
 
 ExecStart={{ minio_binary_dir }}/minio server $MINIO_OPTS $MINIO_VOLUMES
 

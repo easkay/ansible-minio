@@ -6,5 +6,6 @@
   when: minio_use_syslog
 - include_tasks: "logrotate.yml"
   when: minio_setup_logrotate
-- include_tasks: service.yml
+- include_tasks: "config.yml"
+- include_tasks: "service.yml"
 ...

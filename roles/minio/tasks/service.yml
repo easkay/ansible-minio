@@ -6,4 +6,8 @@
     owner: root
     group: root
   notify: reload_systemd
+- name: Enable minio service
+  service:
+    name: minio
+    enabled: yes
 ...
