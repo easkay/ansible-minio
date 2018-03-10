@@ -1,3 +1,4 @@
+MINIO_VOLUMES={{ minio_volumes|join(' ') }}
 {% if minio_access_key is defined %}
 MINIO_ACCESS_KEY={{ minio_access_key }}
 {% endif %}

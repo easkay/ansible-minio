@@ -11,6 +11,19 @@ minio_setup_logrotate: true
 minio_use_syslog: true
 minio_stdout_log_name: minio.stdout.log
 minio_stderr_log_name: minio.stderr.log
+minio_tune_kernel: false
+minio_tune_kernel_values:
+  - { name: "net.ipv4.tcp_fin_timeout", value: 30 }
+  - { name: "net.ipv4.tcp_keepalive_probes", value: 5 }
+  - { name: "net.core.wmem_max", value: 540000 }
+  - { name: "net.core.rmem_max", value: 540000 }
+  - { name: "vm.swappiness", value: 10 }
+  - { name: "vm.dirty_background_ratio", value: 1 }
+  - { name: "vm.dirty_ratio", value: 5 }
+  - { name: "kernel.sched_min_granularity_ns", value: 10000000 }
+  - { name: "kernel.sched_wakeup_granularity_ns", value: 15000000 }
+
+minio_volumes: ["/mnt/minio"]
 
 minio_multitenanting: false
 

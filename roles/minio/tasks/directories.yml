@@ -10,4 +10,11 @@
     owner: "{{ minio_use_syslog|ternary('root', minio_user) }}"
     group: "{{ minio_user|ternary('root', minio_user) }}"
   when: minio_setup_logging
+- name: Create and set permissions on minio data directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ minio_user }}"
+    group: "{{ minio_user }}"
+  with_items: "{{ minio_volumes }}"
 ...

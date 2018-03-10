@@ -1,0 +1,21 @@
+---
+- name: Tune kernel parameters
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+  notify: reload_sysctl
+  with_items: "{{ minio_tune_kernel_values }}"
+- name: Enable transparent huge pages
+  shell: "echo madvise | tee /sys/kernel/mm/transparent_hugepage/enabled"
+- name: Copy disk tuning script
+  copy:
+    src: minio-disk-tuning.sh
+    dest: "/home/{{ minio_user }}"
+    owner: "{{ minio_user }}"
+    group: "{{ minio_user }}"
+    mode: 0755
+  register: minio_copy_disk_tuning_script_result
+- name: Run disk tuning
+  command: "sh /home/{{ minio_user }}/minio-disk-tuning.sh"
+  when: minio_copy_disk_tuning_script_result.changed
+...
