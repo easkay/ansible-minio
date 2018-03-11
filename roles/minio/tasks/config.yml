@@ -1,4 +1,10 @@
 ---
+- name: Set fact for minio_host_addresses
+  set_fact:
+    minio_host_addresses: "{{ minio_cluster_members|map('extract', hostvars, ['ansible_default_ipv4', 'address'])|list }}"
+- name: Set fact for minio_remote_volume_paths
+  set_fact:
+    minio_remote_volume_paths: "{% for address in minio_host_addresses %}{% for volume in minio_volumes %}{{ 'http://' ~ address ~ ':' ~ minio_bind_port ~ volume ~ ' ' }}{% endfor %}{% endfor %}"
 - name: Copy minio env config
   template:
     src: minio-defaults.j2
