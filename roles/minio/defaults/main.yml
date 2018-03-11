@@ -5,12 +5,15 @@ minio_download_dir: /tmp
 minio_working_dir: /usr/local
 minio_binary_dir: /usr/local/bin
 minio_log_dir: /var/log/minio
+minio_bind_address: 0.0.0.0
+minio_bind_port: 9000
 minio_always_update_binary: false
 minio_setup_logging: true
 minio_setup_logrotate: true
 minio_use_syslog: true
 minio_stdout_log_name: minio.stdout.log
 minio_stderr_log_name: minio.stderr.log
+minio_setup_firewall: true
 minio_tune_kernel: false
 minio_tune_kernel_values:
   - { name: "net.ipv4.tcp_fin_timeout", value: 30 }
@@ -24,6 +27,12 @@ minio_tune_kernel_values:
   - { name: "kernel.sched_wakeup_granularity_ns", value: 15000000 }
 
 minio_volumes: ["/mnt/minio"]
+# minio_access_key: <optional>
+# minio_secret_key: <optional>
+# minio_region: <optional>
+# minio_browser: <optional>
+# minio_domain: <optional>
+
 
 minio_multitenanting: false
 

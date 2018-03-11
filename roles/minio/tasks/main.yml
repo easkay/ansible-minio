@@ -10,4 +10,6 @@
   when: minio_kernel_tuning
 - include_tasks: "config.yml"
 - include_tasks: "service.yml"
+- include_tasks: "firewall.yml"
+  when: minio_setup_firewall
 ...
