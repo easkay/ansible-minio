@@ -5,7 +5,7 @@
     value: "{{ item.value }}"
   notify: reload_sysctl
   with_items: "{{ minio_tune_kernel_values }}"
-- name: Enable transparent huge pages
+- name: Selectively disable transparent huge pages
   shell: "echo madvise | tee /sys/kernel/mm/transparent_hugepage/enabled"
 - name: Copy disk tuning script
   copy:

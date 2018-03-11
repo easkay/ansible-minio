@@ -16,6 +16,9 @@ PermissionsStartOnly=true
 
 EnvironmentFile=-/etc/default/minio
 ExecStartPre=/bin/bash -c "[ -n \"${MINIO_VOLUMES}\" ] || (echo \"Variable MINIO_VOLUMES not set in /etc/default/minio\" && exit 1)"
+{% if minio_tune_kernel %}
+ExecStartPre=/bin/bash -c "echo 'madvise' > /sys/kernel/mm/transparent_hugepage/enabled"
+{% endif %}
 
 ExecStart={{ minio_binary_dir }}/minio server $MINIO_OPTS $MINIO_VOLUMES
 

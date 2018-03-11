@@ -14,7 +14,7 @@
 ## See the License for the specific language governing permissions and
 ## limitations under the License.
 
-for i in $(ls -d /sys/block/*/queue/iosched 2>/dev/null); do
+for i in $(ls -d /sys/block/*/queue/iosched | grep -v 'sr' 2>/dev/null); do
     iosched_dir=$(echo $i | awk '/iosched/ {print $1}')
     [ -z $iosched_dir ] && {
         continue
@@ -42,9 +42,7 @@ for i in $(ls -d /sys/block/*/queue/iosched 2>/dev/null); do
     ## This is the maximum number of kilobytes
     ## supported in a single data transfer at
     ## block layer.
-    [ -f $path/max_hw_sectors_kb ] && {
-        # easkay changed 2018-03-10: CentOS has max_hq_sectors_kb in 0444 only
-        chmod u+w $path/max_hw_sectors_kb
-        echo "1024" > $path/max_hw_sectors_kb
+    [ -f $path/max_sectors_kb ] && {
+        echo "1024" > $path/max_sectors_kb
     }
 done

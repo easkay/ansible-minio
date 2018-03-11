@@ -9,5 +9,6 @@
 - name: Enable minio service
   service:
     name: minio
+    state: started
     enabled: yes
 ...
