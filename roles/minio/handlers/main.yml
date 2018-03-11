@@ -5,10 +5,17 @@
     state: restarted
 - name: reload_systemd
   command: "systemctl daemon-reload"
+  listen: "reload_systemd"
+# Ensure not all minio servers are restarted at once
+# https://github.com/ansible/issues/12170
 - name: restart_minio
   service:
     name: minio
     state: restarted
+  run_once: yes
+  delegate_to: "{{ item }}"
+  with_items: "{{ play_hosts }}"
+  listen: "reload_systemd"
 - name: reload_sysctl
   command: "/sbin/sysctl -p"
 ...
