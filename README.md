@@ -13,3 +13,10 @@ Create a role for Ansible which can handle a large majority of minio setups incl
 * Multiple host, multiple instance (multi-tenanting)
 
 Make it as easy as possible to use (sorry I suck at this).
+
+## TODO
+* Multi-tenancy
+* Distribution testing and customisations (ufw, syslog etc)
+* Automated tests
+* Separated variables for distribution dependencies
+* Access key and secret access key generation
