@@ -25,7 +25,8 @@ minio_tune_kernel_values:
   - { name: "vm.dirty_ratio", value: 5 }
   - { name: "kernel.sched_min_granularity_ns", value: 10000000 }
   - { name: "kernel.sched_wakeup_granularity_ns", value: 15000000 }
-minio_cluster_members: "{{ groups['minio'] }}"
+# For distributed setups, supply a list of hosts to 'minio_cluster_members'
+# minio_cluster_members: "{{ groups['minio'] }}"
 
 minio_volumes: ["/mnt/minio"]
 # minio_access_key: <optional>

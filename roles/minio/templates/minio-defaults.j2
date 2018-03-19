@@ -1,4 +1,4 @@
-{% if minio_cluster_members|length > 1 %}
+{% if minio_cluster_members is defined and minio_cluster_members|length > 1 %}
 MINIO_VOLUMES="{{ minio_remote_volume_paths|trim }}"
 {% else %}
 MINIO_VOLUMES="{{ minio_volumes|join(' ') }}"
