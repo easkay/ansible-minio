@@ -1,0 +1,42 @@
+---
+- name: Set up mandatory variables
+  set_fact:
+    minio_name_separator: ""
+    minio_instances:
+      - name: ""
+        bind_address: "{{ minio_bind_address }}"
+        bind_port: "{{ minio_bind_port }}"
+        cluster_members: "{{ minio_cluster_members }}"
+        volumes: "{{ minio_volumes }}"
+        stdout_log_name: "{{ minio_stdout_log_name }}"
+        stderr_log_name: "{{ minio_stderr_log_name }}"
+  when: minio_instances|length == 0 or (minio_multitenanting is defined and not minio_multitenanting)
+
+- name: Set up access key variable
+  set_fact:
+    minio_instances: "{{ [minio_instances[0]|combine({ 'access_key': minio_access_key })] }}"
+  when: minio_access_key is defined
+
+- name: Set up secret key variable
+  set_fact:
+    minio_instances: "{{ [minio_instances[0]|combine({ 'secret_key': minio_secret_key })] }}"
+  when: minio_secret_key is defined
+
+- name: Set up region variable
+  set_fact:
+    minio_instances: "{{ [minio_instances[0]|combine({ 'region': minio_region })] }}"
+  when: minio_region is defined
+
+- name: Set up browser variable
+  set_fact:
+    minio_instances: "{{ [minio_instances[0]|combine({ 'browser': minio_browser })] }}"
+  when: minio_browser is defined
+
+- name: Set up domain variable
+  set_fact:
+    minio_instances: "{{ [minio_instances[0]|combine({ 'domain': minio_domain })] }}"
+  when: minio_domain is defined
+
+- name: Generate access keys
+  set_fact:
+...

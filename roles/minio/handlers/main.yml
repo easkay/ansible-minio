@@ -8,6 +8,7 @@
   listen: "reload_systemd"
 # Ensure not all minio servers are restarted at once
 # https://github.com/ansible/issues/12170
+# Might need to rejig for multi-tenancy
 - name: restart_minio
   service:
     name: minio

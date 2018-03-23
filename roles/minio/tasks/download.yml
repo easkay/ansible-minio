@@ -18,4 +18,5 @@
     mode: 0755
     remote_src: true
     force: "{{ minio_always_update_binary }}"
+  notify: restart_minio
 ...
