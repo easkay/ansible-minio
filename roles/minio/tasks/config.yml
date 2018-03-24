@@ -1,12 +1,14 @@
 ---
-- name: Set fact for minio_host_addresses
+- name: Set fact for minio_host_addresses per instance
   set_fact:
-    minio_host_addresses: "{{ minio_cluster_members|map('extract', hostvars, ['ansible_default_ipv4', 'address'])|list }}"
-  when: minio_cluster_members is defined and minio_cluster_members|length > 1
-- name: Set fact for minio_remote_volume_paths
+    minio_host_addresses: "{{ minio_host_addresses|default({})|combine({ item.name: item['cluster_members']|map('extract', hostvars, ['ansible_default_ipv4', 'address'])|list }) }}"
+  when: item['cluster_members'] is defined and item['cluster_members']|length > 1
+  with_items: "{{ minio_instances }}"
+- name: Set fact for minio_remote_volume_paths per instance
   set_fact:
-    minio_remote_volume_paths: "{% for address in minio_host_addresses %}{% for volume in minio_volumes %}{{ 'http://' ~ address ~ ':' ~ minio_bind_port ~ volume ~ ' ' }}{% endfor %}{% endfor %}"
+    minio_remote_volume_paths: "{ '{{ item.name }}': '{% for address in minio_host_addresses[item.name] %}{% for volume in item.volumes %}{{ 'http://' ~ address ~ ':' ~ item.bind_port ~ volume ~ ' ' }}{% endfor %}{% endfor %}' }"
   when: minio_cluster_members is defined and minio_cluster_members|length > 1
+  with_items: "{{ minio_instances }}"
 - name: Copy minio env config
   template:
     src: minio-defaults.j2
