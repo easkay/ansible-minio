@@ -16,7 +16,7 @@
   delegate_to: "{{ item[0] }}"
   with_nested:
     - "{{ play_hosts }}"
-    - "{{ minio_instances|map(attribute=name) }}"
+    - "{{ minio_instances|map(attribute='name')|list }}"
 - name: restart_minio_specific_instances
   service:
     name: "{{ 'minio' ~ minio_name_separator ~ item[1] }}"

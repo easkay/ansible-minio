@@ -27,8 +27,9 @@ minio_tune_kernel_values:
 
 minio_bind_address: 0.0.0.0
 minio_bind_port: 9000
-minio_cluster_members: "{{ groups['minio'] }}"
-minio_volumes: ["/mnt/minio", "/mnt/minio2", "/mnt/minio3"]
+minio_cluster_members: []
+# minio_cluster_members: "{{ groups['minio'] }}"
+minio_volumes: ["/mnt/minio01"]
 minio_stdout_log_name: minio.stdout.log
 minio_stderr_log_name: minio.stderr.log
 # minio_access_key: <optional for single-node setups>
