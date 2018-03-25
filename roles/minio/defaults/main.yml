@@ -11,7 +11,7 @@ minio_log_dir: /var/log/minio
 minio_always_update_binary: false
 minio_setup_logging: true
 minio_setup_logrotate: true
-minio_use_syslog: true
+minio_use_syslog: false
 minio_setup_firewall: true
 minio_tune_kernel: false
 minio_tune_kernel_values:
