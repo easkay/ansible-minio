@@ -13,4 +13,5 @@
     state: started
     enabled: yes
   with_items: "{{ minio_instances }}"
+  register: minio_service_results
 ...

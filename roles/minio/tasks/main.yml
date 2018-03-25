@@ -13,4 +13,5 @@
 - include_tasks: "service.yml"
 - include_tasks: "firewall.yml"
   when: minio_setup_firewall
+- include_tasks: "restarts.yml"
 ...

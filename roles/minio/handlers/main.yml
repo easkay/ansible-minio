@@ -8,14 +8,24 @@
   listen: "reload_systemd"
 # Ensure not all minio servers are restarted at once
 # https://github.com/ansible/issues/12170
-# Might need to rejig for multi-tenancy
-- name: restart_minio
+- name: restart_minio_all_instances
   service:
-    name: minio
+    name: "{{ 'minio' ~ minio_name_separator ~ item[1] }}"
     state: restarted
   run_once: yes
-  delegate_to: "{{ item }}"
-  with_items: "{{ play_hosts }}"
+  delegate_to: "{{ item[0] }}"
+  with_nested:
+    - "{{ play_hosts }}"
+    - "{{ minio_instances|map(attribute=name) }}"
+- name: restart_minio_specific_instances
+  service:
+    name: "{{ 'minio' ~ minio_name_separator ~ item[1] }}"
+    state: restarted
+  run_once: yes
+  delegate_to: "{{ item[0] }}"
+  with_nested:
+    - "{{ play_hosts }}"
+    - "{{ minio_instances_to_restart|unique }}"
   listen: "reload_systemd"
 - name: reload_sysctl
   command: "/sbin/sysctl -p"
