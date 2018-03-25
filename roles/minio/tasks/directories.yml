@@ -12,9 +12,11 @@
   when: minio_setup_logging
 - name: Create and set permissions on minio data directories
   file:
-    path: "{{ item }}"
+    path: "{{ item[1] }}"
     state: directory
     owner: "{{ minio_user }}"
     group: "{{ minio_user }}"
-  with_items: "{{ minio_volumes }}"
+  with_subelements:
+    - "{{ minio_instances }}"
+    - "volumes"
 ...

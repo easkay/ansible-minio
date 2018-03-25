@@ -12,8 +12,9 @@
 - name: Copy minio env config
   template:
     src: minio-defaults.j2
-    dest: /etc/default/minio
+    dest: "/etc/default/minio{{ minio_name_separator ~ item.name }}"
     owner: root
     group: root
+  with_items: "{{ minio_instances }}"
   notify: restart_minio
 ...

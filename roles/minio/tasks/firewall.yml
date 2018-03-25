@@ -1,9 +1,10 @@
 ---
 - name: Allow traffic to minio through firewall
   firewalld:
-    port: "{{ minio_bind_port }}/tcp"
+    port: "{{ item.bind_port }}/tcp"
     state: enabled
     zone: public
     immediate: yes
     permanent: yes
+  with_items: "{{ minio_instances }}"
 ...

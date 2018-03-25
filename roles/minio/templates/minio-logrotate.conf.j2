@@ -1,4 +1,4 @@
-{{ minio_log_dir }}/{{ minio_stdout_log_name }} {
+{{ minio_log_dir }}/{{ item.stdout_log_name }} {
   daily
   missingok
   rotate 7
@@ -16,8 +16,8 @@
 {% endif %}
 }
 {# Allow for customisable, separate configs for stdout and stderr #}
-{% if not minio_stdout_log_name == minio_stderr_log_name %}
-{{ minio_log_dir }}/{{ minio_stdout_log_name }} {
+{% if not item.stdout_log_name == item.stderr_log_name %}
+{{ minio_log_dir }}/{{ item.stdout_log_name }} {
   daily
   missingok
   rotate 7

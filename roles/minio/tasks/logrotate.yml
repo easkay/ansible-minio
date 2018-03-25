@@ -2,8 +2,9 @@
 - name: Copy logrotate config
   template:
     src: minio-logrotate.conf.j2
-    dest: /etc/logrotate.d/minio.conf
+    dest: "/etc/logrotate.d/minio{{ minio_name_separator ~ item.name }}.conf"
     owner: root
     group: root
+  with_items: "{{ minio_instances }}"
   when: minio_setup_logging and minio_setup_logrotate
 ...

@@ -1,6 +1,6 @@
 # Taken from https://github.com/minio/minio-service/blob/master/linux-systemd/minio.service and tweaked
 [Unit]
-Description=Minio
+Description={{ 'Minio' ~ minio_name_separator ~ item.name }}
 Documentation=https://docs.minio.io
 Wants=network-online.target
 After=network-online.target
@@ -14,13 +14,13 @@ Group={{ minio_user }}
 
 PermissionsStartOnly=true
 
-EnvironmentFile=-/etc/default/minio
-ExecStartPre=/bin/bash -c "[ -n \"${MINIO_VOLUMES}\" ] || (echo \"Variable MINIO_VOLUMES not set in /etc/default/minio\" && exit 1)"
+EnvironmentFile=-/etc/default/{{ 'minio' ~ minio_name_separator ~ item.name }}
+ExecStartPre=/bin/bash -c "[ -n \"${MINIO_VOLUMES}\" ] || (echo \"Variable MINIO_VOLUMES not set in /etc/default/{{ 'minio' ~ minio_name_separator ~ item.name }}\" && exit 1)"
 {% if minio_tune_kernel %}
 ExecStartPre=/bin/bash -c "echo 'madvise' > /sys/kernel/mm/transparent_hugepage/enabled"
 {% endif %}
 
-ExecStart={{ minio_binary_dir }}/minio server --address {{ minio_bind_address }}:{{ minio_bind_port }} $MINIO_OPTS $MINIO_VOLUMES
+ExecStart={{ minio_binary_dir }}/minio server --address {{ item.bind_address }}:{{ item.bind_port }} $MINIO_OPTS $MINIO_VOLUMES
 
 # Let systemd restart this service only if it has ended with the clean exit code or signal.
 Restart=on-success
@@ -30,8 +30,8 @@ StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=minio
 {% elif minio_setup_logging %}
-StandardOutput=file:{{ minio_log_dir }}/{{ minio_stdout_log_name }}
-StandardError=file:{{ minio_log_dir }}/{{ minio_stderr_log_name }}
+StandardOutput=file:{{ minio_log_dir }}/{{ item.stdout_log_name }}
+StandardError=file:{{ minio_log_dir }}/{{ item.stderr_log_name }}
 {% else %}
 StandardOutput=journal
 StandardError=inherit

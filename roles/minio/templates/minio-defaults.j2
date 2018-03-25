@@ -1,20 +1,20 @@
-{% if minio_cluster_members is defined and minio_cluster_members|length > 1 %}
-MINIO_VOLUMES="{{ minio_remote_volume_paths|trim }}"
+{% if item.cluster_members is defined and item.cluster_members|length > 1 %}
+MINIO_VOLUMES="{{ minio_remote_volume_paths[item.name]|trim }}"
 {% else %}
-MINIO_VOLUMES="{{ minio_volumes|join(' ') }}"
+MINIO_VOLUMES="{{ item.volumes|join(' ') }}"
 {% endif %}
-{% if minio_access_key is defined %}
-MINIO_ACCESS_KEY={{ minio_access_key }}
+{% if item.access_key is defined %}
+MINIO_ACCESS_KEY={{ item.access_key }}
 {% endif %}
-{% if minio_secret_key is defined %}
-MINIO_SECRET_KEY={{ minio_secret_key }}
+{% if item.secret_key is defined %}
+MINIO_SECRET_KEY={{ item.secret_key }}
 {% endif %}
-{% if minio_region is defined %}
-MINIO_REGION={{ minio_region }}
+{% if item.region is defined %}
+MINIO_REGION={{ item.region }}
 {% endif %}
-{% if minio_browser is defined %}
-MINIO_BROWSER={{ minio_browser }}
+{% if item.browser is defined %}
+MINIO_BROWSER={{ item.browser }}
 {% endif %}
-{% if minio_domain is defined %}
-MINIO_DOMAIN={{ minio_domain }}
+{% if item.domain is defined %}
+MINIO_DOMAIN={{ item.domain }}
 {% endif %}

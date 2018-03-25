@@ -2,13 +2,15 @@
 - name: Copy systemd unit file
   template:
     src: minio-systemd-unit.j2
-    dest: /etc/systemd/system/minio.service
+    dest: "/etc/systemd/system/{{ 'minio' ~ minio_name_separator ~ item.name }}.service"
     owner: root
     group: root
+  with_items: "{{ minio_instances }}"
   notify: reload_systemd
 - name: Enable minio service
   service:
-    name: minio
+    name: "{{ 'minio' ~ minio_name_separator ~ item.name }}"
     state: started
     enabled: yes
+  with_items: "{{ minio_instances }}"
 ...
