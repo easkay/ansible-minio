@@ -19,4 +19,12 @@
   with_subelements:
     - "{{ minio_instances }}"
     - "volumes"
+- name: Create and set permissions on minio config directories
+  file:
+    path: "/home/{{ minio_user ~ '/.minio' ~ minio_name_separator ~ item.name }}"
+    state: directory
+    owner: "{{ minio_user }}"
+    group: "{{ minio_user }}"
+  with_items:
+    - "{{ minio_instances }}"
 ...

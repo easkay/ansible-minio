@@ -18,3 +18,4 @@ MINIO_BROWSER={{ item.browser }}
 {% if item.domain is defined %}
 MINIO_DOMAIN={{ item.domain }}
 {% endif %}
+MINIO_OPTS="--config-dir /home/{{ minio_user ~ '/.minio' ~ minio_name_separator ~ item.name }}"

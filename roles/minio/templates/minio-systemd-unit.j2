@@ -20,7 +20,7 @@ ExecStartPre=/bin/bash -c "[ -n \"${MINIO_VOLUMES}\" ] || (echo \"Variable MINIO
 ExecStartPre=/bin/bash -c "echo 'madvise' > /sys/kernel/mm/transparent_hugepage/enabled"
 {% endif %}
 
-ExecStart={{ minio_binary_dir }}/minio server --address {{ item.bind_address }}:{{ item.bind_port }} $MINIO_OPTS $MINIO_VOLUMES
+ExecStart={{ minio_binary_dir }}/minio server --address {{ item.bind_address ~ ':' ~ item.bind_port }} $MINIO_OPTS $MINIO_VOLUMES
 
 # Let systemd restart this service only if it has ended with the clean exit code or signal.
 Restart=on-success
@@ -29,9 +29,6 @@ Restart=on-success
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=minio
-{% elif minio_setup_logging %}
-StandardOutput=file:{{ minio_log_dir }}/{{ item.stdout_log_name }}
-StandardError=file:{{ minio_log_dir }}/{{ item.stderr_log_name }}
 {% else %}
 StandardOutput=journal
 StandardError=inherit
