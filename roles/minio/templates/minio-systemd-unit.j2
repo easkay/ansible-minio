@@ -25,7 +25,7 @@ ExecStart={{ minio_binary_dir }}/minio server --address {{ item.bind_address ~ '
 # Let systemd restart this service only if it has ended with the clean exit code or signal.
 Restart=on-success
 
-{% if minio_setup_logging and minio_use_syslog %}
+{% if minio_setup_logging %}
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=minio
