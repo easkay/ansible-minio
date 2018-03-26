@@ -28,7 +28,7 @@ Restart=on-success
 {% if minio_setup_logging %}
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier={{ minio ~ minio_name_separator ~ item.name }}
+SyslogIdentifier={{ 'minio' ~ minio_name_separator ~ item.name }}
 {% else %}
 StandardOutput=journal
 StandardError=inherit

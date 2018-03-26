@@ -36,7 +36,4 @@
   set_fact:
     minio_instances: "{{ [minio_instances[0]|combine({ 'domain': minio_domain })] }}"
   when: minio_domain is defined
-
-- name: Generate access keys
-  set_fact:
 ...

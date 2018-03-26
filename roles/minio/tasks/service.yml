@@ -6,6 +6,7 @@
     owner: root
     group: root
   with_items: "{{ minio_instances }}"
+  register: minio_service_results
   notify: reload_systemd
 - name: Enable minio service
   service:
@@ -13,5 +14,4 @@
     state: started
     enabled: yes
   with_items: "{{ minio_instances }}"
-  register: minio_service_results
 ...
