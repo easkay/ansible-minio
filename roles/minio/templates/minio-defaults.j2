@@ -1,8 +1,14 @@
 {% if item.cluster_members is defined and item.cluster_members|length > 1 %}
-MINIO_VOLUMES="{{ minio_remote_volume_paths[item.name]|trim }}"
+MINIO_VOLUMES=
+{%- for volume in item.volumes -%}
+  {%- for address in minio_host_addresses[item.name] -%}
+{{ 'http://' ~ address ~ ':' ~ item.bind_port ~ volume ~ ' ' }}
+  {%- endfor -%}
+{%- endfor -%}
 {% else %}
 MINIO_VOLUMES="{{ item.volumes|join(' ') }}"
 {% endif %}
+
 {% if item.access_key is defined %}
 MINIO_ACCESS_KEY={{ item.access_key }}
 {% endif %}
