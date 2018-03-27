@@ -11,6 +11,6 @@
     owner: root
     group: root
   with_items: "{{ minio_instances }}"
-  notify: restart_minio_specific_instances
+  notify: restart_minio
   register: minio_config_results
 ...

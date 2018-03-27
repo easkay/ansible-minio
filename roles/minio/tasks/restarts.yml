@@ -1,0 +1,7 @@
+---
+- name: Set fact for minio_instances_to_restart
+  set_fact:
+    minio_instances_to_restart: "{{ minio_instances_to_restart|default([]) + [item.item.name] }}"
+  with_items: "{{ minio_config_results.results + minio_service_results.results }}"
+  when: item.changed
+...
