@@ -1,7 +1,6 @@
 ---
 # Globals across nodes, tenants
 minio_name_separator: "-"
-minio_multitenanting: false # Overrides population of minio_instances
 minio_user: minio
 minio_download_url: https://dl.minio.io/server/minio/release/linux-amd64/minio
 minio_download_dir: /tmp

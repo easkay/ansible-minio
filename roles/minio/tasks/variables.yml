@@ -10,7 +10,7 @@
         volumes: "{{ minio_volumes }}"
         stdout_log_name: "{{ minio_stdout_log_name }}"
         stderr_log_name: "{{ minio_stderr_log_name }}"
-  when: minio_instances|default([])|length == 0 or (minio_multitenanting is defined and not minio_multitenanting)
+  when: minio_instances|default([])|length == 0
 
 - name: Set up access key variable
   set_fact:

@@ -1,0 +1,108 @@
+---
+- name: Setup variables for testing
+  set_fact:
+    number_of_hosts: "{{ number_of_hosts|default({})|combine({ item.name: (item.cluster_members|default([]) + [inventory_hostname])|unique|length }) }}"
+    number_of_volumes: "{{ number_of_hosts|default({})|combine({ item.name: item.volumes|length }) }}"
+    total_number_of_volumes: "{{ total_number_of_volumes|default({})|combine({ item.name: (item.cluster_members|default([]) + [inventory_hostname])|unique|length * item.volumes|length }) }}"
+  with_items: "{{ minio_instances }}"
+  when: minio_instances|default([])|length > 0
+- name: Setup variables for testing
+  set_fact:
+    number_of_hosts: "{{ (minio_cluster_members|default([]) + [inventory_hostname])|unique|length }}"
+    number_of_volumes: "{{ minio_volumes|length }}"
+    total_number_of_volumes: "{{ (minio_cluster_members|default([]) + [inventory_hostname])|unique|length * minio_volumes|length }}"
+  when: minio_instances|default([])|length == 0
+- name: Check name separator
+  assert:
+    msg: >
+      A name separator (minio_name_separator) must be defined
+      and have length > 0 when multi-tenanting
+    that: >-
+          minio_name_separator is defined
+          and
+          minio_name_separator|length > 0
+  when: minio_instances|default([])|length > 0
+- name: Check volume count matches minio's expectations (multi-tenanting)
+  assert:
+    msg: ">-
+      If using erasure coding, there must be at least 4 volumes in the minio cluster.
+      Otherwise, there should be only 1 volume.
+      There are {{ total_number_of_volumes[item.name] }}
+      volumes in total ({{ number_of_hosts[item.name] }} hosts and {{ number_of_volumes[item.name] }} volumes)."
+    that: total_number_of_volumes[item.name]|int == 1 or total_number_of_volumes[item.name]|int >= 4
+  when: minio_instances|default([])|length > 0
+  with_items: "{{ minio_instances }}"
+- name: Check volume count matches minio's expectations (single-tenanting)
+  assert:
+    msg: ">-
+      If using erasure coding, there must be at least 4 volumes in the minio cluster.
+      Otherwise, there should be only 1 volume.
+      There are {{ total_number_of_volumes }}
+      volumes in total ({{ number_of_hosts }} hosts and {{ number_of_volumes }} volumes)."
+    that: total_number_of_volumes|int == 1 or total_number_of_volumes|int >= 4
+  when: minio_instances|default([])|length == 0
+- fail: msg="foo"
+...
+
+# ---
+# # Globals across nodes, tenants
+# minio_name_separator: "-"
+# # minio_multitenanting: false # Overrides population of minio_instances
+# minio_user: minio
+# minio_download_url: https://dl.minio.io/server/minio/release/linux-amd64/minio
+# minio_download_dir: /tmp
+# minio_working_dir: /usr/local
+# minio_binary_dir: /usr/local/bin
+# minio_log_dir: /var/log/minio
+# minio_always_update_binary: false
+# minio_setup_logging: true
+# minio_setup_logrotate: true
+# minio_setup_firewall: true
+# minio_tune_kernel: false
+# minio_tune_kernel_values:
+#   - { name: "net.ipv4.tcp_fin_timeout", value: 30 }
+#   - { name: "net.ipv4.tcp_keepalive_probes", value: 5 }
+#   - { name: "net.core.wmem_max", value: 540000 }
+#   - { name: "net.core.rmem_max", value: 540000 }
+#   - { name: "vm.swappiness", value: 10 }
+#   - { name: "vm.dirty_background_ratio", value: 1 }
+#   - { name: "vm.dirty_ratio", value: 5 }
+#   - { name: "kernel.sched_min_granularity_ns", value: 10000000 }
+#   - { name: "kernel.sched_wakeup_granularity_ns", value: 15000000 }
+
+# minio_bind_address: 0.0.0.0
+# minio_bind_port: 9000
+# minio_cluster_members: []
+# # or
+# # minio_cluster_members: "{{ groups['minio'] }}"
+# minio_volumes: ["/mnt/minio01", "/mnt/minio02"]
+# minio_stdout_log_name: minio.stdout.log
+# minio_stderr_log_name: minio.stderr.log
+# minio_access_key: abcdefg123
+# minio_secret_key: zyxwvut987
+# # minio_region: <optional>
+# # minio_browser: <optional>
+# # minio_domain: <optional>
+
+# # minio_instances: []
+# # or
+# minio_instances:
+# - name: first
+#   bind_address: 0.0.0.0
+#   bind_port: 9000
+#   cluster_members: "{{ groups['minio'] }}"
+#   volumes: ["/mnt/minio-first01", "/mnt/minio-first02"]
+#   access_key: abcdefg123
+#   secret_key: abcdefg123
+#   stdout_log_name: minio-first.stdout.log
+#   stderr_log_name: minio-first.stderr.log
+# - name: second
+#   bind_address: 0.0.0.0
+#   bind_port: 9001
+#   cluster_members: "{{ groups['minio'] }}"
+#   volumes: ["/mnt/minio-second01", "/mnt/minio-second02"]
+#   access_key: zyxwvut987
+#   secret_key: abcdefg123
+#   stdout_log_name: minio-second.stdout.log
+#   stderr_log_name: minio-second.stderr.log
+# ...
