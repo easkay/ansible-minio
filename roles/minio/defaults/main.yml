@@ -1,5 +1,5 @@
 ---
-# Globals across nodes, tenants
+# Globals across nodes and tenants
 minio_name_separator: "-"
 minio_user: minio
 minio_download_url: https://dl.minio.io/server/minio/release/linux-amd64/minio
@@ -23,6 +23,7 @@ minio_tune_kernel_values:
   - { name: "kernel.sched_min_granularity_ns", value: 10000000 }
   - { name: "kernel.sched_wakeup_granularity_ns", value: 15000000 }
 
+# Single tenant settings
 minio_bind_address: 0.0.0.0
 minio_bind_port: 9000
 minio_cluster_members: []
@@ -30,25 +31,34 @@ minio_cluster_members: []
 minio_volumes: ["/mnt/minio01"]
 minio_stdout_log_name: minio.stdout.log
 minio_stderr_log_name: minio.stderr.log
-# minio_access_key: <optional for single-node setups>
-# minio_secret_key: <optional for single-node setups>
+# minio_access_key: <optional>
+# minio_secret_key: <optional>
 # minio_region: <optional>
 # minio_browser: <optional>
 # minio_domain: <optional>
 
-minio_instances: []
+# Populating minio_instances enables multi-tenanting.
+# This ignores any similar values (minio_bind_address, minio_bind_port) previously defined
 # minio_instances:
-# - name: default
+# - name: first
 #   bind_address: 0.0.0.0
 #   bind_port: 9000
-#   cluster_members: "{{ groups['minio'] }}"
-#   volumes: ["/mnt/minio", "/mnt/minio2", "/mnt/minio3"]
-#   stdout_log_name: minio.stdout.log
-#   stderr_log_name: minio.stderr.log
-#   access_key: theaccesskey
-#   secret_key: thesecretkey
-#   region: <optional>
-#   browser: <optional>
-#   domain: <optional>
+#   # cluster_members: []
+#   # cluster_members: "{{ groups['minio'] }}"
+#   volumes: ["/mnt/minio-first01", "/mnt/minio-first02","/mnt/minio-first01", "/mnt/minio-first02"]
+#   access_key: <redacted>
+#   secret_key: <redacted>
+#   stdout_log_name: minio-first.stdout.log
+#   stderr_log_name: minio-first.stderr.log
+# - name: second
+#   bind_address: 0.0.0.0
+#   bind_port: 9001
+#   # cluster_members: []
+#   # cluster_members: "{{ groups['minio'] }}"
+#   volumes: ["/mnt/minio-second01"]
+#   access_key: <redacted>
+#   secret_key: <redacted>
+#   stdout_log_name: minio-second.stdout.log
+#   stderr_log_name: minio-second.stderr.log
 
 ...
