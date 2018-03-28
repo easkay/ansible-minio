@@ -1,2 +1,2 @@
-if $programname == 'minio{{ minio_name_separator ~ item.name }}' then {{ minio_log_dir ~ '/' ~ item.stdout_log_name }}
+if $programname == 'minio{{ minio_name_separator ~ item.name }}' then {{ minio_log_dir ~ '/' ~ item.log_file_name }}
 if $programname == 'minio{{ minio_name_separator ~ item.name }}' then stop

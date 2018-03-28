@@ -29,8 +29,7 @@ minio_bind_port: 9000
 minio_cluster_members: []
 # minio_cluster_members: "{{ groups['minio'] }}"
 minio_volumes: ["/mnt/minio01"]
-minio_stdout_log_name: minio.stdout.log
-minio_stderr_log_name: minio.stderr.log
+minio_log_file_name: minio.log
 # minio_access_key: <optional>
 # minio_secret_key: <optional>
 # minio_region: <optional>
@@ -48,8 +47,7 @@ minio_stderr_log_name: minio.stderr.log
 #   volumes: ["/mnt/minio-first01", "/mnt/minio-first02","/mnt/minio-first01", "/mnt/minio-first02"]
 #   access_key: <redacted>
 #   secret_key: <redacted>
-#   stdout_log_name: minio-first.stdout.log
-#   stderr_log_name: minio-first.stderr.log
+#   log_file_name: minio-first.log
 # - name: second
 #   bind_address: 0.0.0.0
 #   bind_port: 9001
@@ -58,7 +56,6 @@ minio_stderr_log_name: minio.stderr.log
 #   volumes: ["/mnt/minio-second01"]
 #   access_key: <redacted>
 #   secret_key: <redacted>
-#   stdout_log_name: minio-second.stdout.log
-#   stderr_log_name: minio-second.stderr.log
+#   log_file_name: minio-second.log
 
 ...

@@ -80,20 +80,20 @@
   when: number_of_hosts|int > 1
 - name: Check log names are setup (multi-tenanting)
   assert:
-    msg: "stdout_log_name must be set for instance {{ item.name }}."
+    msg: "log_file_name must be set for instance {{ item.name }}."
     that: >-
-      item.stdout_log_name is defined
+      item.log_file_name is defined
       and
-      item.stdout_log_name|length >= 1
+      item.log_file_name|length >= 1
   when: minio_instances|default([])|length > 0
   with_items: "{{ minio_instances }}"
 - name: Check log names are setup (single-tenanting)
   assert:
-    msg: "minio_stdout_log_name must be set."
+    msg: "minio_log_file_name must be set."
     that: >-
-      minio_stdout_log_name is defined
+      minio_log_file_name is defined
       and
-      minio_stdout_log_name|length >= 1
+      minio_log_file_name|length >= 1
   when: minio_instances|default([])|length == 0
 - name: Check bind details are setup (multi-tenanting)
   assert:

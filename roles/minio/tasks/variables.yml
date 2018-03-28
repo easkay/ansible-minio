@@ -8,8 +8,7 @@
         bind_port: "{{ minio_bind_port }}"
         cluster_members: "{{ minio_cluster_members }}"
         volumes: "{{ minio_volumes }}"
-        stdout_log_name: "{{ minio_stdout_log_name }}"
-        stderr_log_name: "{{ minio_stderr_log_name }}"
+        log_file_name: "{{ minio_log_file_name }}"
   when: minio_instances|default([])|length == 0
 
 - name: Set up access key variable

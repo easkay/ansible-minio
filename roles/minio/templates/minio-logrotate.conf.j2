@@ -1,4 +1,4 @@
-{{ minio_log_dir ~ '/' ~ item.stdout_log_name }} {
+{{ minio_log_dir ~ '/' ~ item.log_file_name }} {
   daily
   missingok
   rotate 7
@@ -10,18 +10,3 @@
     /usr/bin/killall -HUP rsyslogd
   endscript
 }
-{# Allow for customisable, separate configs for stdout and stderr #}
-{% if not item.stdout_log_name == item.stderr_log_name %}
-{{ minio_log_dir ~ '/' ~ item.stdout_log_name }} {
-  daily
-  missingok
-  rotate 7
-  compress
-  delaycompress
-  notifempty
-  sharedscripts
-  postrotate
-    /usr/bin/killall -HUP rsyslogd
-  endscript
-}
-{% endif %}
