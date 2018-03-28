@@ -139,68 +139,21 @@
       item.value|string|length > 0
   when: minio_tune_kernel and minio_tune_kernel_values|length > 0
   with_items: "{{ minio_tune_kernel_values }}"
-- fail: msg="foo"
+- name: Check required variables are defined
+  assert:
+    msg: "{{ item }} must be defined."
+    that: vars[item] is defined
+  with_items:
+    - minio_name_separator
+    - minio_user
+    - minio_download_url
+    - minio_download_dir
+    - minio_working_dir
+    - minio_binary_dir
+    - minio_log_dir
+    - minio_always_update_binary
+    - minio_setup_logging
+    - minio_setup_logrotate
+    - minio_setup_firewall
+    - minio_tune_kernel
 ...
-
-# ---
-# # Globals across nodes, tenants
-# minio_name_separator: "-"
-# # minio_multitenanting: false # Overrides population of minio_instances
-# minio_user: minio
-# minio_download_url: https://dl.minio.io/server/minio/release/linux-amd64/minio
-# minio_download_dir: /tmp
-# minio_working_dir: /usr/local
-# minio_binary_dir: /usr/local/bin
-# minio_log_dir: /var/log/minio
-# minio_always_update_binary: false
-# minio_setup_logging: true
-# minio_setup_logrotate: true
-# minio_setup_firewall: true
-# minio_tune_kernel: false
-# minio_tune_kernel_values:
-#   - { name: "net.ipv4.tcp_fin_timeout", value: 30 }
-#   - { name: "net.ipv4.tcp_keepalive_probes", value: 5 }
-#   - { name: "net.core.wmem_max", value: 540000 }
-#   - { name: "net.core.rmem_max", value: 540000 }
-#   - { name: "vm.swappiness", value: 10 }
-#   - { name: "vm.dirty_background_ratio", value: 1 }
-#   - { name: "vm.dirty_ratio", value: 5 }
-#   - { name: "kernel.sched_min_granularity_ns", value: 10000000 }
-#   - { name: "kernel.sched_wakeup_granularity_ns", value: 15000000 }
-
-# minio_bind_address: 0.0.0.0
-# minio_bind_port: 9000
-# minio_cluster_members: []
-# # or
-# # minio_cluster_members: "{{ groups['minio'] }}"
-# minio_volumes: ["/mnt/minio01", "/mnt/minio02"]
-# minio_stdout_log_name: minio.stdout.log
-# minio_stderr_log_name: minio.stderr.log
-# minio_access_key: abcdefg123
-# minio_secret_key: zyxwvut987
-# # minio_region: <optional>
-# # minio_browser: <optional>
-# # minio_domain: <optional>
-
-# # minio_instances: []
-# # or
-# minio_instances:
-# - name: first
-#   bind_address: 0.0.0.0
-#   bind_port: 9000
-#   cluster_members: "{{ groups['minio'] }}"
-#   volumes: ["/mnt/minio-first01", "/mnt/minio-first02"]
-#   access_key: abcdefg123
-#   secret_key: abcdefg123
-#   stdout_log_name: minio-first.stdout.log
-#   stderr_log_name: minio-first.stderr.log
-# - name: second
-#   bind_address: 0.0.0.0
-#   bind_port: 9001
-#   cluster_members: "{{ groups['minio'] }}"
-#   volumes: ["/mnt/minio-second01", "/mnt/minio-second02"]
-#   access_key: zyxwvut987
-#   secret_key: abcdefg123
-#   stdout_log_name: minio-second.stdout.log
-#   stderr_log_name: minio-second.stderr.log
-# ...
