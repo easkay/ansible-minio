@@ -12,6 +12,12 @@
     number_of_volumes: "{{ minio_volumes|length }}"
     total_number_of_volumes: "{{ (minio_cluster_members|default([]) + [inventory_hostname])|unique|length * minio_volumes|length }}"
   when: minio_instances|default([])|length == 0
+- name: Check instances are named (multi-tenanting)
+  assert:
+    msg: "Each minio instance must have a unique name key."
+    that: item.name is defined and minio_instances|selectattr('name', 'equalto', item.name)|list|length == 1
+  when: minio_instances|default([])|length > 0
+  with_items: "{{ minio_instances }}"
 - name: Check name separator
   assert:
     msg: >
@@ -41,6 +47,98 @@
       volumes in total ({{ number_of_hosts }} hosts and {{ number_of_volumes }} volumes)."
     that: total_number_of_volumes|int == 1 or total_number_of_volumes|int >= 4
   when: minio_instances|default([])|length == 0
+- name: Check access and secret keys are setup when clustering (multi-tenanting)
+  assert:
+    msg: ">-
+      If running a minio cluster (cluster_members > 1),
+      the access_key and secret_key variables must be set
+      and should both be at least 8 characters."
+    that: >-
+      item.access_key is defined
+      and
+      item.access_key|length >= 8
+      and
+      item.secret_key is defined
+      and
+      item.secret_key|length >= 8
+  when: number_of_hosts[item.name]|int > 1
+  with_items: "{{ minio_instances|default([]) }}"
+- name: Check access and secret keys are setup when clustering (single-tenanting)
+  assert:
+    msg: ">-
+      If running a minio cluster (minio_cluster_members > 1),
+      the access_key and secret_key variables must be set
+      and should both be at least 8 characters."
+    that: >-
+      minio_access_key is defined
+      and
+      minio_access_key|length >= 8
+      and
+      minio_secret_key is defined
+      and
+      minio_secret_key|length >= 8
+  when: number_of_hosts|int > 1
+- name: Check log names are setup (multi-tenanting)
+  assert:
+    msg: "stdout_log_name must be set for instance {{ item.name }}."
+    that: >-
+      item.stdout_log_name is defined
+      and
+      item.stdout_log_name|length >= 1
+  when: minio_instances|default([])|length > 0
+  with_items: "{{ minio_instances }}"
+- name: Check log names are setup (single-tenanting)
+  assert:
+    msg: "minio_stdout_log_name must be set."
+    that: >-
+      minio_stdout_log_name is defined
+      and
+      minio_stdout_log_name|length >= 1
+  when: minio_instances|default([])|length == 0
+- name: Check bind details are setup (multi-tenanting)
+  assert:
+    msg: ">-
+      bind_address should be set as an IP address.
+      bind_port should be an integer greater than 0 for instance {{ item.name }}."
+    that: >-
+      item.bind_address is defined
+      and
+      item.bind_address|ipaddr
+      and
+      item.bind_port is defined
+      and
+      item.bind_port|int > 0
+  when: minio_instances|default([])|length > 0
+  with_items: "{{ minio_instances }}"
+- name: Check bind details are setup (single-tenanting)
+  assert:
+    msg: ">-
+      minio_bind_address should be set as an IP address.
+      minio_bind_port should be an integer greater than 0."
+    that: >-
+      minio_bind_address is defined
+      and
+      minio_bind_address|ipaddr
+      and
+      minio_bind_port is defined
+      and
+      minio_bind_port|int > 0
+  when: minio_instances|default([])|length == 0
+- name: Check minio_tune_kernel_values structure
+  assert:
+    msg: ">-
+      Each dict in kernel_tune_values should have a name and value key.
+      The corresponding values should not be empty."
+    that:
+      item.name is defined
+      and
+      item.name|string|length > 0
+      and
+      item.value is defined
+      and
+      item.value|string|length > 0
+  when: minio_tune_kernel and minio_tune_kernel_values|length > 0
+  with_items: "{{ minio_tune_kernel_values }}"
 - fail: msg="foo"
 ...
 
