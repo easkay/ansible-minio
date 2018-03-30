@@ -47,6 +47,17 @@
       volumes in total ({{ number_of_hosts }} hosts and {{ number_of_volumes }} volumes)."
     that: total_number_of_volumes|int == 1 or total_number_of_volumes|int >= 4
   when: minio_instances|default([])|length == 0
+- name: Check volumes are unique (multi-tenanting)
+  assert:
+    msg: "There must not be duplicate volumes. Check the volumes key in the {{ item.name }} instance."
+    that: item.volumes|unique|list|length == item.volumes|length
+  when: minio_instances|default([])|length > 0
+  with_items: "{{ minio_instances|default([]) }}"
+- name: Check volumes are unique (single-tenanting)
+  assert:
+    msg: "There must not be duplicate volumes. Check the minio_volumes variable."
+    that: minio_volumes|unique|list|length == minio_volumes|length
+  when: minio_instances|default([])|length == 0
 - name: Check access and secret keys are setup when clustering (multi-tenanting)
   assert:
     msg: ">-
