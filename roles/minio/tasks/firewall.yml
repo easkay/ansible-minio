@@ -1,5 +1,5 @@
 ---
-- name: Allow traffic to minio through firewall
+- name: Allow traffic to minio through firewall (firewalld)
   firewalld:
     port: "{{ item.bind_port }}/tcp"
     state: enabled
@@ -7,4 +7,13 @@
     immediate: yes
     permanent: yes
   with_items: "{{ minio_instances }}"
+  when: ansible_os_family == 'RedHat'
+- name: Allow traffic to minio through firewall (ufw)
+  ufw:
+    to_port: "{{ item.bind_port }}"
+    proto: tcp
+    rule: allow
+    state: reloaded
+  with_items: "{{ minio_instances }}"
+  when: ansible_os_family == 'Debian'
 ...
