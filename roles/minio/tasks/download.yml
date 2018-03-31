@@ -17,7 +17,7 @@
     group: "{{ minio_user }}"
     mode: 0755
     remote_src: true
-    force: true
-  when: minio_always_update_binary
+    force: "{{ minio_always_update_binary }}"
+  when: minio_always_update_binary or not minio_binary_stat_result.stat.exists
   notify: restart_minio
 ...

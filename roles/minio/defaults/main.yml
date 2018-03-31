@@ -10,7 +10,7 @@ minio_log_dir: /var/log/minio
 minio_always_update_binary: false
 minio_setup_logging: true
 minio_setup_logrotate: true
-minio_setup_firewall: true
+minio_setup_firewall: "{{ ansible_distribution != 'Debian' }}"
 minio_tune_kernel: false
 minio_tune_kernel_values:
   - { name: "net.ipv4.tcp_fin_timeout", value: 30 }

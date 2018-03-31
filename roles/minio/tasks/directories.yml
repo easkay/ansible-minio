@@ -7,8 +7,8 @@
   file:
     path: "{{ minio_log_dir }}"
     state: directory
-    owner: "{{ (ansible_os_family == 'Debian')|ternary('syslog', 'root') }}"
-    group: "{{ (ansible_os_family == 'Debian')|ternary('syslog', 'root') }}"
+    owner: "{{ (ansible_distribution == 'Ubuntu')|ternary('syslog', 'root') }}"
+    group: "{{ (ansible_distribution == 'Ubuntu')|ternary('syslog', 'root') }}"
   when: minio_setup_logging
 - name: Create and set permissions on minio data directories
   file:
