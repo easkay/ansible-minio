@@ -10,14 +10,15 @@ galaxy_info:
     - 7
   - name: Debian
     versions:
-    - 8
-    - 9
+    - jessie
+    - stretch
+    - buster
   - name: Ubuntu
     versions:
-    - 16.04 LTS
-    - 16.10
-    - 17.04
-    - 17.10
+    - xenial
+    - yakkety
+    - zesty
+    - artful
   galaxy_tags:
     - minio
     - objectstore
