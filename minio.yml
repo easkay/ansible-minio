@@ -1,7 +1,0 @@
----
-- hosts: minio
-  roles:
-    - essentials
-    - minio
-  become: yes
-...

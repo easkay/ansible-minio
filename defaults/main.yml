@@ -24,38 +24,38 @@ minio_tune_kernel_values:
   - { name: "kernel.sched_wakeup_granularity_ns", value: 15000000 }
 
 # Single tenant settings
-minio_bind_address: 0.0.0.0
-minio_bind_port: 9000
-minio_cluster_members: []
-# minio_cluster_members: "{{ groups['minio'] }}"
-minio_volumes: ["/mnt/minio01"]
-minio_log_file_name: minio.log
-# minio_access_key: <optional>
-# minio_secret_key: <optional>
+# minio_bind_address: 0.0.0.0
+# minio_bind_port: 9000
+# minio_cluster_members: []
+# minio_cluster_members: "{{ groups['minio-ubuntu1710'] }}"
+# minio_volumes: ["/mnt/minio1"]
+# minio_log_file_name: minio.log
+# minio_access_key: theaccesskey
+# minio_secret_key: thesecretkey
 # minio_region: <optional>
 # minio_browser: <optional>
 # minio_domain: <optional>
 
 # Populating minio_instances enables multi-tenanting.
 # This ignores any similar values (minio_bind_address, minio_bind_port) previously defined
-# minio_instances:
-# - name: first
-#   bind_address: 0.0.0.0
-#   bind_port: 9000
-#   # cluster_members: []
-#   # cluster_members: "{{ groups['minio'] }}"
-#   volumes: ["/mnt/minio-first01", "/mnt/minio-first02","/mnt/minio-first01", "/mnt/minio-first02"]
-#   access_key: <redacted>
-#   secret_key: <redacted>
-#   log_file_name: minio-first.log
-# - name: second
-#   bind_address: 0.0.0.0
-#   bind_port: 9001
-#   # cluster_members: []
-#   # cluster_members: "{{ groups['minio'] }}"
-#   volumes: ["/mnt/minio-second01"]
-#   access_key: <redacted>
-#   secret_key: <redacted>
-#   log_file_name: minio-second.log
+minio_instances:
+- name: first
+  bind_address: 0.0.0.0
+  bind_port: 9000
+  cluster_members: []
+  # cluster_members: "{{ groups['minio'] }}"
+  volumes: ["/mnt/minio-first01", "/mnt/minio-first02", "/mnt/minio-first03", "/mnt/minio-first04"]
+  access_key: theaccesskey
+  secret_key: thesecretkey
+  log_file_name: minio-first.log
+- name: second
+  bind_address: 0.0.0.0
+  bind_port: 9001
+  cluster_members: []
+  # cluster_members: "{{ groups['minio'] }}"
+  volumes: ["/mnt/minio-second01"]
+  access_key: theaccesskey
+  secret_key: thesecretkey
+  log_file_name: minio-second.log
 
 ...
