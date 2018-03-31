@@ -98,6 +98,11 @@
       item.log_file_name|length >= 1
   when: minio_instances|default([])|length > 0
   with_items: "{{ minio_instances }}"
+- name: Check log names are unique (multi-tenanting)
+  assert:
+    msg: "There must not be overlapping log names. Check the log_file_name keys in minio_instances."
+    that: minio_instances|map(attribute='log_file_name')|unique|list|length == minio_instances|map(attribute='log_file_name')|list|length
+  when: minio_instances|default([])|length > 0
 - name: Check log names are setup (single-tenanting)
   assert:
     msg: "minio_log_file_name must be set."
