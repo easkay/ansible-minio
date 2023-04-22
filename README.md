@@ -1,5 +1,11 @@
 # Ansible Role: minio
 
+## Tl;dr
+
+* Decide between single tenant or multi-tenant
+* Read `defaults/main.yml`, tweak as needed or override with your own variables
+* Add custom configuration in `templates/minio-defaults.j2`
+
 An Ansible role that installs and configures Minio on CentOS, RedHat, Ubuntu and Debian.
 
 Minio can be configured in a variety of different ways, including across one or more servers, one or more disks as well as both in combination.
